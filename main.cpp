@@ -10,16 +10,29 @@ int factorial(int n) {
     return factorial(n-1) * n;
 }
 
-template<typename T1, typename T2>
-std::ostream& operator<< (std::ostream& stream, const std::map<T1,T2>& m) {
-    for (auto i : m){
-        stream << i << std::endl;
-    }
-    return stream;
-}
+// Простой шаблон
+//template<typename Key, typename Value>
+//std::ostream& operator<< (std::ostream& stream, const std::map<Key,Value>& m) {
+//    for (auto i : m){
+//        stream << i << std::endl;
+//    }
+//    return stream;
+//}
 
-template<typename T1, typename T2, typename T3,typename T4>
-std::ostream& operator<< (std::ostream& stream, const std::map<T1,T2,T3,T4>& m) {
+// Указать дефолтовые значения
+//template<typename Key, typename Value,
+//        typename S = std::less<Key>,
+//        typename A = std::allocator<std::pair<const Key,Value>>>
+//std::ostream& operator<< (std::ostream& stream, const std::map<Key,Value,S,A>& m) {
+//    for (auto i : m){
+//        stream << i << std::endl;
+//    }
+//    return stream;
+//}
+
+// Использовать параметр пак
+template<typename ...Args>
+std::ostream& operator<< (std::ostream& stream, const std::map<Args...>& m) {
     for (auto i : m){
         stream << i << std::endl;
     }
@@ -32,12 +45,28 @@ std::ostream& operator<<(std::ostream& stream, const std::pair<T1,T2> p){
     return stream;
 }
 
-template<typename T>
-void set_map(T& m) {
+template<typename ...Args>
+void set_map(std::map<Args...>& m) {
     for (size_t i=0; i<10; i++){
         m[i]=factorial(i);
     }
     return;
+}
+
+template<typename ...Args>
+void set_simple_vector(simple_vector<Args...>& v) {
+    for (size_t i=0; i<10; i++){
+        v.pushback(i);
+    }
+    return;
+}
+
+template<typename ...Args>
+std::ostream& operator<< (std::ostream& stream, const simple_vector<Args...>& v) {
+    for (std::size_t i=0; i<v.get_size(); i++){
+        stream << v[i] << std::endl;
+    }
+    return stream;
 }
 
 int main() {
@@ -56,31 +85,23 @@ int main() {
     {
         auto m = std::map<int, int>{};
         set_map(m);
-        std::cout << m << std::endl;
+        std::cout << m;
     }
     {
         auto m = std::map<int, int, std::less<int>, forward_allocator<std::pair<const int, int>>>{};
         set_map(m);
-        std::cout << m << std::endl;
+        std::cout << m;
     }
 
     {
         simple_vector<int> sv;
-        for (std::size_t i = 0; i < 10; i++) {
-            sv.pushback(i);
-        }
-        for (std::size_t i = 0; i < 10; i++) {
-            std::cout << sv[i] << std::endl;
-        }
+        set_simple_vector(sv);
+        std::cout << sv;
     }
     {
         simple_vector<int,forward_allocator<int>> sv;
-        for (std::size_t i = 0; i < 10; i++) {
-            sv.pushback(i);
-        }
-        for (std::size_t i = 0; i < 10; i++) {
-            std::cout << sv[i] << std::endl;
-        }
+        set_simple_vector(sv);
+        std::cout << sv;
     }
     return 0;
 }

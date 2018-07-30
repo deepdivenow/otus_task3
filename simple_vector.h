@@ -43,7 +43,7 @@ public:
         size++;
     }
 
-    T operator[] ( std::size_t pos ){
+    T operator[] ( std::size_t pos ) const{
         if (pos>=size){
             std::logic_error("Position is invalid");
         }
@@ -51,7 +51,7 @@ public:
         return *pointer;
     }
 
-    std::size_t get_size(){
+    std::size_t get_size() const{
         return size;
     }
 
