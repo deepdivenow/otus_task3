@@ -9,7 +9,7 @@
 #include <bitset>
 #include <algorithm>
 //maximum
-#define ELEMENTS_IN_BLOCK 64
+const std::size_t ELEMENTS_IN_BLOCK=64;
 
 
 struct header{

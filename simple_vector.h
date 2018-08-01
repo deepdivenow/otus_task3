@@ -24,7 +24,7 @@ public:
 
         // copy all elements to new area
         for (std::size_t i=0;i<size;i++){
-            alloc.construct(new_area+i, T(*area+i));
+            alloc.construct(new_area+i, T(*(area+i)));
         }
         // destroy old elements
         for (std::size_t i=0;i<size;i++){
@@ -38,8 +38,7 @@ public:
 
     void pushback(T elem){
         if (alloc_size < size+1) resize_policy();
-        auto pointer = area+size;
-        *pointer = elem;
+        alloc.construct(area+size, T(elem));
         size++;
     }
 
@@ -47,8 +46,7 @@ public:
         if (pos>=size){
             std::logic_error("Position is invalid");
         }
-        auto pointer=area+pos;
-        return *pointer;
+        return *(area+pos);
     }
 
     std::size_t get_size() const{
@@ -70,6 +68,5 @@ private:
     std::size_t alloc_size;
     T* area;
     A alloc;
-
 };
 

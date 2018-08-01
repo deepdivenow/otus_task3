@@ -81,7 +81,7 @@ int main() {
 //    for (auto i: v) {
 //        std::cout << i << std::endl;
 //    }
-
+//
     {
         auto m = std::map<int, int>{};
         set_map(m);
@@ -103,5 +103,6 @@ int main() {
         set_simple_vector(sv);
         std::cout << sv;
     }
+
     return 0;
 }
